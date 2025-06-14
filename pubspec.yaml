@@ -67,9 +67,12 @@ flutter:
     - assets/images/signup_image.png
     - assets/images/breakfast.png
     - assets/images/lunch.png
+    - assets/images/scheduled_lunch.png
     - assets/images/snacks.png
     - assets/images/dinner.png
     - assets/images/profile.png
+    - assets/images/weekly_schedule.jpg
+    - assets/images/billing.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -10,7 +10,7 @@ Widget mealCard(String title, String imagePath, {bool isSelected = true}) {
         margin: const EdgeInsets.only(right: 6, left: 6, bottom: 20),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 2.5),
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(39, 39, 39, 0.7),
+          color: Color(0xFF252525),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(22),
             bottomLeft: Radius.circular(22),

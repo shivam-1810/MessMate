@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mess_app/components/weekly_schedule_card.dart';
 
-class WeeklyMenuScreen extends StatelessWidget {
-  final String title;
+class WeeklyMenuScreen extends StatefulWidget {
   final List<Map<String, String>> menuList;
 
   const WeeklyMenuScreen({
     super.key,
-    required this.title,
     required this.menuList,
   });
+
+  @override
+  State<WeeklyMenuScreen> createState() => _WeeklyMenuScreenState();
+}
+
+class _WeeklyMenuScreenState extends State<WeeklyMenuScreen> {
+  int _selectedMealType = 0;
+  final PageController _pageController = PageController();
+  final List<String> _mealTypes = ['Breakfast', 'Lunch', 'Snacks', 'Dinner'];
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,40 +35,64 @@ class WeeklyMenuScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Back Button
-              IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () => Navigator.pop(context),
-              ),
-
-              const SizedBox(height: 10),
-
               // Title Section
               Center(
                 child: Column(
                   children: [
-                    Text(
-                      "Weekly Menu",
-                      style: GoogleFonts.lobsterTwo(
-                        color: Colors.amber,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Back Button with smooth transition
+                        IconButton(
+                          icon:
+                              const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                        Text(
+                          "Weekly Menu",
+                          style: GoogleFonts.pacifico(
+                            color: const Color.fromRGBO(255, 183, 3, 1),
+                            fontSize: 32,
+                          ),
+                        ),
+                        // Invisible IconButton for symmetry
+                        const Opacity(
+                          opacity: 0,
+                          child: IconButton(
+                            icon: Icon(Icons.arrow_back),
+                            onPressed: null,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      title,
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        color: Colors.white,
-                        letterSpacing: 1.5,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      height: 2,
-                      width: 120,
-                      color: Colors.white24,
+                    const SizedBox(height: 7.5),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 2,
+                            color: Colors.white38,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Text(
+                            _mealTypes[_selectedMealType].toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.montserrat(
+                              fontSize: 22,
+                              color: Colors.white,
+                              letterSpacing: 1.5,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 2,
+                            color: Colors.white38,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -62,60 +100,127 @@ class WeeklyMenuScreen extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              // Menu Grid
-              Expanded(
-                child: GridView.builder(
-                  itemCount: menuList.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.76,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 20,
-                  ),
+              // Meal Type Selector
+              SizedBox(
+                height: 50,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _mealTypes.length,
                   itemBuilder: (context, index) {
-                    final meal = menuList[index];
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white10,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(40),
-                          bottomLeft: Radius.circular(40),
-                          bottomRight: Radius.circular(20),
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            _selectedMealType = index;
+                          });
+                          _pageController.animateToPage(
+                            index,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: _selectedMealType == index
+                                ? const Color.fromRGBO(255, 183, 3, 1)
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                              color: const Color.fromRGBO(255, 183, 3, 0.5),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              _mealTypes[index],
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.montserrat(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: _selectedMealType == index
+                                    ? Colors.black
+                                    : Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            meal['imagePath']!,
-                            height: 70,
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            meal['day']!,
-                            style: GoogleFonts.dancingScript(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.amber,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            meal['menu']!,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.poppins(
-                              fontSize: 13,
-                              color: Colors.white,
-                              height: 1.4,
-                            ),
-                          ),
-                        ],
                       ),
                     );
                   },
                 ),
-              )
+              ),
+
+              const SizedBox(height: 20),
+
+              // Menu Grid with PageView for swipe functionality
+              Expanded(
+                child: PageView.builder(
+                  controller: _pageController,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _selectedMealType = index;
+                    });
+                  },
+                  itemCount: _mealTypes.length,
+                  itemBuilder: (context, pageIndex) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: GridView.builder(
+                        itemCount: widget.menuList.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.76,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 20,
+                        ),
+                        itemBuilder: (context, index) {
+                          final meal = widget.menuList[index];
+                          // Responsive sizing
+                          final screenWidth = MediaQuery.of(context).size.width;
+                          final screenHeight =
+                              MediaQuery.of(context).size.height;
+                          final containerWidth =
+                              (screenWidth - 16 - 18 * 2) / 2;
+                          final containerHeight = screenHeight * 200 / 917;
+
+                          return weeklyScheduleCard(
+                            meal: meal,
+                            containerWidth: containerWidth,
+                            containerHeight: containerHeight,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              // Page indicator
+              Padding(
+                padding: const EdgeInsets.only(top: 13),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    _mealTypes.length,
+                    (index) => AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      width: _selectedMealType == index ? 20 : 8,
+                      height: 8,
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: _selectedMealType == index
+                            ? const Color.fromRGBO(255, 183, 3, 1)
+                            : const Color.fromRGBO(255, 183, 3, 0.4),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
