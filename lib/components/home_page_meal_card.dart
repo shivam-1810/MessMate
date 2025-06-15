@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-Widget mealCard(String title, String imagePath, {bool isSelected = true}) {
+Widget mealCard(String title, String imagePath, String meal,
+    {bool isConfirmed = true}) {
   return Stack(
     children: [
       Container(
@@ -28,13 +30,32 @@ Widget mealCard(String title, String imagePath, {bool isSelected = true}) {
               width: 100,
               fit: BoxFit.contain,
             ),
+
+            // Meals
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Text(
+                  meal,
+                  style: GoogleFonts.montserrat(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                  maxLines: 2,
+                  textAlign: TextAlign.start,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            const SizedBox(width: 28),
           ],
         ),
       ),
       Positioned(
         right: 23,
         top: 68,
-        child: isSelected
+        child: isConfirmed
             ? CircleAvatar(
                 radius: 12.5,
                 backgroundColor: const Color.fromRGBO(91, 255, 82, 1),

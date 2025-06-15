@@ -38,6 +38,7 @@ dependencies:
   slide_to_act: ^2.0.2
   intl: ^0.20.2
   icons_plus: ^5.0.0
+  curved_navigation_bar: ^1.0.6
 
 dev_dependencies:
   flutter_test:
@@ -67,12 +68,15 @@ flutter:
     - assets/images/signup_image.png
     - assets/images/breakfast.png
     - assets/images/lunch.png
-    - assets/images/scheduled_lunch.png
     - assets/images/snacks.png
     - assets/images/dinner.png
     - assets/images/profile.png
     - assets/images/weekly_schedule.jpg
     - assets/images/billing.png
+    - assets/images/scheduled_lunch.png
+    - assets/images/scheduled_dinner.png
+    - assets/images/scheduled_snacks.png
+    - assets/images/scheduled_breakfast.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

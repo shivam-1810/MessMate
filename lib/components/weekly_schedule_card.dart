@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget weeklyScheduleCard({
-  required Map<String, String> meal,
+  required Map<String, String> menuList,
+  required String mealType,
   required double containerWidth,
   required double containerHeight,
 }) {
@@ -34,7 +35,7 @@ Widget weeklyScheduleCard({
                 flex: 3,
               ),
               Text(
-                meal['day']!,
+                menuList['day'] ?? 'Day',
                 style: GoogleFonts.jimNightshade(
                   fontSize: 30,
                   color: Color.fromRGBO(255, 183, 3, 1),
@@ -42,27 +43,54 @@ Widget weeklyScheduleCard({
               ),
               const SizedBox(height: 8),
               Text(
-                meal['menu']!,
+                menuList[mealType] ?? 'No Meal Data',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.portLligatSans(
                   fontSize: 14,
                   color: Colors.white,
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
               Spacer(),
             ],
           ),
         ),
-        Positioned(
-          top: -120,
-          left: -235,
-          child: Image.asset(
-            'assets/images/scheduled_lunch.png',
-            width: 650,
-            height: 250,
-          ),
-        ),
+        mealType == 'Lunch'
+            ? Positioned(
+                top: -120,
+                left: -235,
+                child: Image.asset(
+                  _getMealImage(mealType),
+                  width: 655,
+                  height: 252,
+                ),
+              )
+            : Positioned(
+                top: -85,
+                right: 12,
+                child: Image.asset(
+                  _getMealImage(mealType),
+                  width: 140,
+                  height: 140,
+                ),
+              ),
       ],
     ),
   );
+}
+
+String _getMealImage(String mealType) {
+  switch (mealType.toLowerCase()) {
+    case 'breakfast':
+      return 'assets/images/scheduled_breakfast.png';
+    case 'lunch':
+      return 'assets/images/scheduled_lunch.png';
+    case 'snacks':
+      return 'assets/images/scheduled_snacks.png';
+    case 'dinner':
+      return 'assets/images/scheduled_dinner.png';
+    default:
+      return 'assets/images/lunch.png';
+  }
 }

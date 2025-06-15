@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mess_app/pages/home_page.dart';
+import 'package:mess_app/pages/base_page.dart';
 
 class OTPVerificationPage extends StatefulWidget {
   const OTPVerificationPage({super.key});
@@ -136,7 +136,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
+                        builder: (context) => BasePage(key: BasePage.globalKey),
                       ),
                     );
                   },
